@@ -50,7 +50,6 @@ export class UserBusiness {
         }
         
         const userDB = await this.userDatabase.getUserByEmail(user.email)
-
         const hashCompare = await this.hashManager.compare(user.password, userDB.getPassword())
 
         if (!hashCompare) {
@@ -58,7 +57,6 @@ export class UserBusiness {
         }
 
         const accessToken = this.authenticator.generateToken({ id: userDB.getId() })
-
         return accessToken
     }
 }
