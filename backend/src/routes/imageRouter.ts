@@ -7,4 +7,4 @@ export const imageRouter = express.Router()
 const imageController = new ImageController()
 
 imageRouter.get("/:id", imageController.getImageDetailById)
-imageRouter.put("/register", imageController.registerImage)
+imageRouter.post("/register", imageController.registerImage)

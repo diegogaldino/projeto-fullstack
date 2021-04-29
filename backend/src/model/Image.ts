@@ -3,7 +3,7 @@ export class Image {
         private id: string,
         private subtitle: string,
         private author: string,
-        private file: string
+        private file: string,
     ) { }
 
     public getId(): string { return this.id }
@@ -11,6 +11,7 @@ export class Image {
     public getAuthor(): string { return this.author }
     public getFile(): string { return this.file }
 
+    public setId(id: string) { this.id = id }
     public setSubtitle(subtitle: string) { this.subtitle = subtitle }
     public setAuthor(author: string) { this.author = author }
     public setFile(file: string) { this.file = file }
@@ -27,6 +28,7 @@ export class Image {
 
 export interface ImageInputDTO {
     subtitle: string,
-    author: string,
-    file: string
+    file: string,
+    tag: string[],
+    collection: string
 }

@@ -14,19 +14,23 @@ export class ImageBusiness {
     ) { }
 
     async registerImage(input: ImageInputDTO, token: string) {
+        console.log(input)
         const tokenData = this.authenticator.getData(token)
         if (!tokenData.id) {
             throw new UnauthorizedError("Only authorized can access this feature")
         }
-        if (!input.author || !input.file || !input.subtitle) {
+        if (!input.collection || !input.tag || !input.file || !input.subtitle) {
             throw new InvalidInputError("Invalid input to registerImage")
         }
 
         await this.imageDatabase.createImage(
             Image.toImage({
+                id: this.idGenerator.generate(),
+                author:tokenData.id,
                 ...input,
-                id: this.idGenerator.generate()
-            })!
+            })!,
+            input.tag,
+            input.collection
         )
     }
 

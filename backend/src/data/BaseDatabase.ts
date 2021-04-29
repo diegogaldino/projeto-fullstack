@@ -7,7 +7,10 @@ export abstract class BaseDatabase {
 
     protected tables = {
         users: "Project_users",
-        images:"Project_images"
+        images:"Project_images",
+        tags:"Project_tags",
+        collections:"Project_collections",
+        imagesTags:"Project_images_tags",
     }
 
     protected getConnection(): Knex{

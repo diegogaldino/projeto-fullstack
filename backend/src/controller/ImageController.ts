@@ -11,8 +11,9 @@ export class ImageController {
         try {
             const input: ImageInputDTO = {
                 subtitle: req.body.subtitle,
-                author: req.body.author,
-                file: req.body.file
+                file: req.body.file,
+                tag:req.body.tagsIds,
+                collection: req.body.collectionId
             }
     
             const imageBusiness = new ImageBusiness(
