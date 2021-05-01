@@ -7,6 +7,13 @@ import { Authenticator } from "../services/Authenticator";
 import { HashManager } from "../services/HashManager";
 import { IdGenerator } from "../services/IdGenerator";
 
+const userBusiness = new UserBusiness(
+    new UserDatabase,
+    new IdGenerator,
+    new HashManager,
+    new Authenticator
+)
+
 export class UserController {
 
     async signup(req: Request, res: Response) {
@@ -17,13 +24,6 @@ export class UserController {
                 password: req.body.password,
                 nickname: req.body.nickname
             }
-
-            const userBusiness = new UserBusiness(
-                new UserDatabase,
-                new IdGenerator,
-                new HashManager,
-                new Authenticator
-            )
 
             const token = await userBusiness.createUser(input);
             res.status(200).send({ token });
@@ -39,20 +39,42 @@ export class UserController {
                 email: req.body.email,
                 password: req.body.password
             }
-
-            const userBusiness = new UserBusiness(
-                new UserDatabase,
-                new IdGenerator,
-                new HashManager,
-                new Authenticator
-            )
-            
             const token = await userBusiness.authUserByEmail(loginData)
             res.status(200).send({ token })
         } catch (error) {
             res.status(400).send({ error: error.message });
         }
 
+        await BaseDatabase.destroyConnection();
+    }
+
+    async getProfile(req: Request, res: Response) {
+        try {  
+            const userDB = await userBusiness.getProfileUserById(req.params.id as string,req.headers.authorization as string)
+            res.status(200).send(userDB)
+        } catch (error) {
+            res.status(400).send({ error: error.message });
+        }
+        await BaseDatabase.destroyConnection();
+    }
+
+    async getProfileByName(req: Request, res: Response) {
+        try {  
+            const userDB = await userBusiness.getProfileUserByName(req.query.name as string,req.headers.authorization as string)
+            res.status(200).send(userDB)
+        } catch (error) {
+            res.status(400).send({ error: error.message });
+        }
+        await BaseDatabase.destroyConnection();
+    }
+
+    async getUserCollection(req: Request, res: Response) {
+        try {  
+            const collections = await userBusiness.getUserCollectionsByAuthorId(req.headers.authorization as string)
+            res.status(200).send(collections)
+        } catch (error) {
+            res.status(400).send({ error: error.message });
+        }
         await BaseDatabase.destroyConnection();
     }
 

@@ -6,22 +6,19 @@ import { TagInputDTO } from "../model/Tag";
 import { TagBusiness } from "../business/TagBusiness";
 import { TagDatabase } from "../data/TagDatabase";
 
+const tagBusiness = new TagBusiness(
+    new TagDatabase,
+    new IdGenerator,
+    new Authenticator
+)
+
 export class TagController {
 
     async createTag(req: Request, res: Response) {
         try {
-            const input: TagInputDTO = {
-                name: req.body.name
-            }
-
-            const tagBusiness = new TagBusiness(
-                new TagDatabase,
-                new IdGenerator,
-                new Authenticator
-            )
-
+            const input: TagInputDTO = { name: req.body.name }
             await tagBusiness.createTag(input, req.headers.authorization as string);
-            res.status(200).send({message: "Tag created successfully"});
+            res.status(200).send({ message: "Tag created successfully" });
         } catch (error) {
             res.status(400).send({ error: error.message });
         }
@@ -30,11 +27,6 @@ export class TagController {
 
     async allTags(req: Request, res: Response) {
         try {
-            const tagBusiness = new TagBusiness(
-                new TagDatabase,
-                new IdGenerator,
-                new Authenticator
-            )
             const tags = await tagBusiness.getAllTags(req.headers.authorization as string)
             res.status(200).send({ tags })
         } catch (error) {

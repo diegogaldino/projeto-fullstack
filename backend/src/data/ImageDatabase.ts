@@ -1,5 +1,5 @@
 import { NotFoundError } from "../error/NotFoundError";
-import { Image, ImageInputDTO } from "../model/Image";
+import { Image } from "../model/Image";
 
 import { BaseDatabase } from "./BaseDatabase";
 
@@ -45,5 +45,14 @@ export class ImageDatabase extends BaseDatabase {
             throw new NotFoundError(`Unable to found image with input: ${id}`)
         }
         return Image.toImage(image[0])!
+    }
+    public async getAllImage(): Promise<Image[]> {
+        const image = await this.getConnection()
+            .select("*")
+            .from(this.tables.images)
+        if (!image[0]) {
+            throw new NotFoundError(`Not found images`)
+        }
+        return image
     }
 }

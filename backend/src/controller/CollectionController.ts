@@ -7,22 +7,19 @@ import { Authenticator } from "../services/Authenticator";
 import { IdGenerator } from "../services/IdGenerator";
 
 
+const collectionBusiness = new CollectionBusiness(
+    new CollectionDatabase,
+    new IdGenerator,
+    new Authenticator
+)
+
 export class CollectionController {
 
     async createCollection(req: Request, res: Response) {
         try {
-            const input: CollectionInputDTO = {
-                name: req.body.name
-            }
-
-            const collectionBusiness = new CollectionBusiness(
-                new CollectionDatabase,
-                new IdGenerator,
-                new Authenticator
-            )
-
+            const input: CollectionInputDTO = { name: req.body.name }
             await collectionBusiness.createCollection(input, req.headers.authorization as string);
-            res.status(200).send({message: "Collection created successfully"});
+            res.status(200).send({ message: "Collection created successfully" });
         } catch (error) {
             res.status(400).send({ error: error.message });
         }
@@ -31,11 +28,6 @@ export class CollectionController {
 
     async allCollection(req: Request, res: Response) {
         try {
-            const collectionBusiness = new CollectionBusiness(
-                new CollectionDatabase,
-                new IdGenerator,
-                new Authenticator
-            )
             const collections = await collectionBusiness.getAllCollections(req.headers.authorization as string)
             res.status(200).send({ collections })
         } catch (error) {

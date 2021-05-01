@@ -14,7 +14,7 @@ export class ImageBusiness {
     ) { }
 
     async registerImage(input: ImageInputDTO, token: string) {
-        console.log(input)
+
         const tokenData = this.authenticator.getData(token)
         if (!tokenData.id) {
             throw new UnauthorizedError("Only authorized can access this feature")
@@ -34,10 +34,22 @@ export class ImageBusiness {
         )
     }
 
-    async getDetailImageById(id: string): Promise<Image> {
+    async getDetailImageById(id: string,token:string): Promise<Image> {
+        const tokenData = this.authenticator.getData(token)
+        if (!tokenData.id) {
+            throw new UnauthorizedError("Only authorized can access this feature")
+        }
         if (!id) {
             throw new InvalidInputError("Invalid id to getDetailImageById")
         }
         return this.imageDatabase.getImageById(id)
+    }
+
+    async getAllImage(token:string): Promise<Image[]> {
+        const tokenData = this.authenticator.getData(token)
+        if (!tokenData.id) {
+            throw new UnauthorizedError("Only authorized can access this feature")
+        }
+        return this.imageDatabase.getAllImage()
     }
 }

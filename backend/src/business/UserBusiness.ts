@@ -4,6 +4,7 @@ import { IdGenerator } from "../services/IdGenerator"
 import { HashManager } from "../services/HashManager"
 import { Authenticator } from "../services/Authenticator"
 import { InvalidInputError } from "../error/InvalidInputError"
+import { UnauthorizedError } from "../error/UnauthorizedError"
 
 export class UserBusiness {
     constructor(
@@ -51,12 +52,42 @@ export class UserBusiness {
         
         const userDB = await this.userDatabase.getUserByEmail(user.email)
         const hashCompare = await this.hashManager.compare(user.password, userDB.getPassword())
-
+    
         if (!hashCompare) {
             throw new InvalidInputError("Invalid password")
         }
-
+    
         const accessToken = this.authenticator.generateToken({ id: userDB.getId() })
         return accessToken
+    }
+
+    async getProfileUserById(id: string,token:string) { 
+        const tokenData = this.authenticator.getData(token)
+        if (!tokenData.id) {
+            throw new UnauthorizedError("Only authorized can access this feature")
+        }
+
+        if (!id ) throw new InvalidInputError("Invalid input to login")
+        return await this.userDatabase.getUserByid(id)
+    }
+    
+    async getProfileUserByName(name: string,token:string) { 
+        const tokenData = this.authenticator.getData(token)
+        if (!tokenData.id) {
+            throw new UnauthorizedError("Only authorized can access this feature")
+        }
+        
+        if (!name ) throw new InvalidInputError("Invalid input to login")
+        return await this.userDatabase.getUserByName(name)
+    }
+
+    async getUserCollectionsByAuthorId(token:string) { 
+        const tokenData = this.authenticator.getData(token)
+        if (!tokenData.id) {
+            throw new UnauthorizedError("Only authorized can access this feature")
+        }
+    
+        if (!tokenData.id ) throw new InvalidInputError("Invalid input to login")
+        return await this.userDatabase.getUserByid(tokenData.id)
     }
 }
