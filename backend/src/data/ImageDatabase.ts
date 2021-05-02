@@ -46,6 +46,7 @@ export class ImageDatabase extends BaseDatabase {
         }
         return Image.toImage(image[0])!
     }
+
     public async getAllImage(): Promise<Image[]> {
         const image = await this.getConnection()
             .select("*")
@@ -54,5 +55,17 @@ export class ImageDatabase extends BaseDatabase {
             throw new NotFoundError(`Not found images`)
         }
         return image
+    }
+    
+    public async getImageBySubtitle(subtitle: string): Promise<Image> {
+        const image = await this.getConnection()
+            .select("*")
+            .from(this.tables.images)
+            .where("subtitle", subtitle)
+
+        if (!image[0]) {
+            throw new NotFoundError(`Unable to found image with input: ${subtitle}`)
+        }
+        return Image.toImage(image[0])!
     }
 }

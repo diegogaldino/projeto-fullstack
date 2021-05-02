@@ -52,4 +52,15 @@ export class ImageBusiness {
         }
         return this.imageDatabase.getAllImage()
     }
+
+    async getImageBySubtitle(subtitle: string,token:string): Promise<Image> {
+        const tokenData = this.authenticator.getData(token)
+        if (!tokenData.id) {
+            throw new UnauthorizedError("Only authorized can access this feature")
+        }
+        if (!subtitle) {
+            throw new InvalidInputError("Invalid id to getImageBysubtitle")
+        }
+        return this.imageDatabase.getImageBySubtitle(subtitle)
+    }
 }

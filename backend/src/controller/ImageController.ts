@@ -58,4 +58,17 @@ export class ImageController {
             await BaseDatabase.destroyConnection()
         }
     }
+    async getImageBySubtitle(req: Request, res: Response) {
+        try {
+            const subtitle = (req.query.subtitle) as string
+            const image = await imageBusiness.getImageBySubtitle(subtitle,req.headers.authorization as string)
+            res.status(200).send(image)
+        } catch (err) {
+            res.status(err.customErrorCode || 400).send({
+                message: err.message,
+            })
+        } finally {
+            await BaseDatabase.destroyConnection()
+        }
+    }
 }

@@ -7,5 +7,6 @@ export const imageRouter = express.Router()
 const imageController = new ImageController()
 
 imageRouter.get("/all", imageController.getAllImage)
+imageRouter.get("/search-by-subtitle", imageController.getImageBySubtitle)
 imageRouter.get("/:id", imageController.getImageDetailById)
 imageRouter.post("/register", imageController.registerImage)
