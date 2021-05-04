@@ -26,7 +26,7 @@ export const Login = (props) => {
     const login = async (event) => {
         event.preventDefault()
         try {
-            const response = await axios.post(`${baseURL}/login`, form)           
+            const response = await axios.post(`${baseURL}/user/login`, form)           
             
             // console.log(getUserToken(response.data.token))
             localStorage.setItem("token", response.data.token)

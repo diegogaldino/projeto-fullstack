@@ -12,7 +12,7 @@ import { baseURL } from "../parameters"
 import { goTo } from "../routes/Coordinator"
 
 export const Signup = () => {
-    const [form, onChange, clear] = useForm({ email: "", password: "", username: "" })
+    const [form, onChange, clear] = useForm({ email: "", password: "", name: "", nickname:"" })
     const toast = useToast()
 
     const history = useHistory()
@@ -23,7 +23,7 @@ export const Signup = () => {
         event.preventDefault()
 
         try {
-            await axios.post(`${baseURL}/signup`, form)
+            await axios.post(`${baseURL}/user/signup`, form)
             toast({
                 title: "Account created.",
                 description: "We've created your account for you.",
@@ -60,8 +60,12 @@ export const Signup = () => {
                     <Heading>Create your account</Heading>
                     <form onSubmit={createLogin} >
                         <FormControl mt="20px">
-                            <FormLabel>Username</FormLabel>
-                            <Input value={form.username} name={"username"} onChange={onChange} type="text" variant="outline" placeholder="Enter your username" isRequired />
+                            <FormLabel>Name</FormLabel>
+                            <Input value={form.name} name={"name"} onChange={onChange} type="text" variant="outline" placeholder="Enter your name" isRequired />
+                        </FormControl>
+                        <FormControl mt="20px">
+                            <FormLabel>Nickname</FormLabel>
+                            <Input value={form.nickname} name={"nickname"} onChange={onChange} type="text" variant="outline" placeholder="Enter your nickname" isRequired />
                         </FormControl>
                         <FormControl mt="10px">
                             <FormLabel>Email adress</FormLabel>
