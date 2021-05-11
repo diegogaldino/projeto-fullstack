@@ -16,8 +16,7 @@ export const Header = () => {
     const [user,setUser]=useState([])
 
     useEffect(()=>{
-        setUser(JSON.parse(localStorage.getItem("user")))
-        // console.log(user)
+        setUser(localStorage.getItem("user"))
     },[])
 
     return (
@@ -34,7 +33,7 @@ export const Header = () => {
                     {!localStorage.getItem("token") ?
                         <Button mx={1} colorScheme="teal" variant="outline" onClick={() => { goTo(history, "/", "") }}>Home</Button>
                         :
-                        null}
+                        <Button mx={1} colorScheme="teal" variant="outline" onClick={() => { goTo(history, "/profile", "") }}>Profile</Button>}
 
                     {localStorage.getItem("token") ?
                         <Button mx={1} colorScheme="teal" variant="outline" onClick={() => { goTo(history, "/posts", "") }}>Posts</Button>

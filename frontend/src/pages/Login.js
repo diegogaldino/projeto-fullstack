@@ -11,6 +11,7 @@ import useUnProtectedPage from "../hooks/useUnProtectedPage"
 import { goTo } from "../routes/Coordinator"
 import axios from 'axios'
 import {getUserToken} from '../components/getUserToken'
+import {parseJwt}from "../components/getUserToken"
 import { baseURL } from "../parameters"
 
 
@@ -28,9 +29,12 @@ export const Login = (props) => {
         try {
             const response = await axios.post(`${baseURL}/user/login`, form)           
             
-            // console.log(getUserToken(response.data.token))
             localStorage.setItem("token", response.data.token)
-            localStorage.setItem("user", getUserToken(response.data.token))
+            console.log("tokenid",getUserToken(response.data.token))
+
+            const aux=parseJwt(response.data.token)
+            const user = JSON.parse(aux).id
+            localStorage.setItem("user",user)
             toast({
                 title: "Account accepted.",
                 description: "Logging into your account.",

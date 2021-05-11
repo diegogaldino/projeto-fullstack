@@ -63,4 +63,25 @@ export class ImageBusiness {
         }
         return this.imageDatabase.getImageBySubtitle(subtitle)
     }
+    async getImageByAuthorId(id: string,token:string): Promise<Image[]> {
+        const tokenData = this.authenticator.getData(token)
+        if (!tokenData.id) {
+            throw new UnauthorizedError("Only authorized can access this feature")
+        }
+        if (!id) {
+            throw new InvalidInputError("Invalid id to getImageByAuthorId")
+        }
+        return this.imageDatabase.getImagesByAuthor(id)
+    }
+
+    async getTagbyImageId(id: string,token:string): Promise<Image[]> {
+        const tokenData = this.authenticator.getData(token)
+        if (!tokenData.id) {
+            throw new UnauthorizedError("Only authorized can access this feature")
+        }
+        if (!id) {
+            throw new InvalidInputError("Invalid id to getTagbyImageId")
+        }
+        return this.imageDatabase.getTagByImageId(id)
+    }
 }

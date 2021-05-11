@@ -21,7 +21,7 @@ export class ImageDatabase extends BaseDatabase {
             throw new Error(err.sqlMessage || err.message)
         }
         try {
-            for (let i = 0; i < tagsIds.length;i++){
+            for (let i = 0; i < tagsIds.length; i++) {
                 await this.getConnection()
                     .insert({
                         image_id: image.getId(),
@@ -56,7 +56,7 @@ export class ImageDatabase extends BaseDatabase {
         }
         return image
     }
-    
+
     public async getImageBySubtitle(subtitle: string): Promise<Image> {
         const image = await this.getConnection()
             .select("*")
@@ -67,5 +67,30 @@ export class ImageDatabase extends BaseDatabase {
             throw new NotFoundError(`Unable to found image with input: ${subtitle}`)
         }
         return Image.toImage(image[0])!
+    }
+
+    public async getImagesByAuthor(id: string): Promise<Image[]> {
+        const image = await this.getConnection()
+            .select("*")
+            .from(this.tables.images)
+            .where("author", id)
+
+        if (!image[0]) {
+            throw new NotFoundError(`Unable to found image with author input: ${id}`)
+        }
+        return image
+    }
+    public async getTagByImageId(id: string): Promise<Image[]> {
+
+        const image = await this.getConnection()
+            .raw(`select Project_tags.name from Project_images_tags
+             join Project_tags on Project_tags.id=Project_images_tags.tag_id 
+             where Project_images_tags.image_id="${id}";`)
+
+        if (!image[0]) {
+            throw new NotFoundError(`Unable to found image with tag input: ${id}`)
+        }
+        console.log("dsfs",image[0])
+        return image[0]
     }
 }

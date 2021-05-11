@@ -71,4 +71,31 @@ export class ImageController {
             await BaseDatabase.destroyConnection()
         }
     }
+    async getImageByAuthorId(req: Request, res: Response) {
+        try {
+            const id = (req.params.id) as string
+            const image = await imageBusiness.getImageByAuthorId(id,req.headers.authorization as string)
+            res.status(200).send(image)
+        } catch (err) {
+            res.status(err.customErrorCode || 400).send({
+                message: err.message,
+            })
+        } finally {
+            await BaseDatabase.destroyConnection()
+        }
+    }
+    async getTagByImageId(req: Request, res: Response) {
+        try {
+            const id = (req.params.id) as string
+            const tags = await imageBusiness.getTagbyImageId(id,req.headers.authorization as string)
+            console.log(tags)
+            res.status(200).send(tags)
+        } catch (err) {
+            res.status(err.customErrorCode || 400).send({
+                message: err.message,
+            })
+        } finally {
+            await BaseDatabase.destroyConnection()
+        }
+    }
 }

@@ -8,5 +8,7 @@ const imageController = new ImageController()
 
 imageRouter.get("/all", imageController.getAllImage)
 imageRouter.get("/search-by-subtitle", imageController.getImageBySubtitle)
+imageRouter.get("/author/:id", imageController.getImageByAuthorId)
+imageRouter.get("/tag/:id", imageController.getTagByImageId)
 imageRouter.get("/:id", imageController.getImageDetailById)
 imageRouter.post("/register", imageController.registerImage)
