@@ -34,25 +34,26 @@ export class UserDatabase extends BaseDatabase {
       .from(this.tables.users)
       .where("id", id);
 
-    return User.toUserModel(result[0]);
+    return User.toUserModel(result[0])
   }
 
   public async getUserByName(name: string): Promise<User> {
     const result = await this.getConnection()
       .select("*")
       .from(this.tables.users)
-      .where("name", name);
+      .where("name", name)
 
     return User.toUserModel(result[0]);
   }
-  public async getUserCollection(id: string): Promise<User> {
+  public async getUserCollection(id: string): Promise<any> {
     const result = await this.getConnection()
-      .raw(`
-        SELECT * FROM Project_images
-        JOIN Project_collections ON Project_collections.id = Project_images.collection
-        WHERE Project_images.author = ${id};
-      `)
-
-    return User.toUserModel(result[0]);
+    .raw(`
+    SELECT Project_collections.name FROM Project_images
+    JOIN Project_collections ON Project_collections.id = Project_images.collection
+    WHERE Project_images.author = "${id}"
+    group by Project_collections.name;
+    `)
+    
+    return result[0]
   }
 }

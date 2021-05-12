@@ -17,12 +17,12 @@ export class CollectionDatabase extends BaseDatabase {
     }
   }
 
-  public async getAllCollections(): Promise<Collection> {
+  public async getAllCollections(): Promise<Collection[]> {
       const result = await this.getConnection()
       .select("*")
       .from(this.tables.collections)
 
-    return Collection.toCollectionModel(result[0])
+    return result
   }
 
 }

@@ -17,12 +17,12 @@ export class TagDatabase extends BaseDatabase {
     }
   }
 
-  public async getAllTags(): Promise<Tag> {
+  public async getAllTags(): Promise<Tag[]> {
       const result = await this.getConnection()
       .select("*")
       .from(this.tables.tags)
 
-    return Tag.toTagModel(result[0])
+    return result
   }
 
 }

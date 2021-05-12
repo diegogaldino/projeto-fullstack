@@ -84,4 +84,14 @@ export class ImageBusiness {
         }
         return this.imageDatabase.getTagByImageId(id)
     }
+    async getTagsbyUserId(id: string,token:string): Promise<Image[]> {
+        const tokenData = this.authenticator.getData(token)
+        if (!tokenData.id) {
+            throw new UnauthorizedError("Only authorized can access this feature")
+        }
+        if (!id) {
+            throw new InvalidInputError("Invalid id to getTagbyImageId")
+        }
+        return this.imageDatabase.getTagsByUserId(id)
+    }
 }

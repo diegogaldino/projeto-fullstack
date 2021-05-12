@@ -86,8 +86,7 @@ export class UserBusiness {
         if (!tokenData.id) {
             throw new UnauthorizedError("Only authorized can access this feature")
         }
-    
         if (!tokenData.id ) throw new InvalidInputError("Invalid input to login")
-        return await this.userDatabase.getUserByid(tokenData.id)
+        return await this.userDatabase.getUserCollection(tokenData.id)
     }
 }

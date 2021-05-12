@@ -93,4 +93,18 @@ export class ImageDatabase extends BaseDatabase {
         console.log("dsfs",image[0])
         return image[0]
     }
+    public async getTagsByUserId(id: string): Promise<Image[]> {
+
+        const image = await this.getConnection()
+            .raw(`select * from Project_images_tags
+            join Project_tags on Project_tags.id=Project_images_tags.tag_id
+            join Project_images on Project_images.id=Project_images_tags.image_id
+            where Project_images.author ="${id}";`)
+
+        if (!image[0]) {
+            throw new NotFoundError(`Unable to found image with tag input: ${id}`)
+        }
+        console.log("dsfs",image[0])
+        return image[0]
+    }
 }
