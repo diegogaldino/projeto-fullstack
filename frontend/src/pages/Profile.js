@@ -1,8 +1,8 @@
 import { Image } from "@chakra-ui/image"
-import { Flex, HStack, Text } from "@chakra-ui/layout"
-import { Tag, TagCloseButton, TagLabel } from "@chakra-ui/tag"
+import { Flex, Text } from "@chakra-ui/layout"
+
 import axios from "axios"
-import { useEffect, useLayoutEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import { Header } from "../components/Header"
 import { PostCard } from "../components/PostCard"
 import { TagImage } from "../components/TagImage"
@@ -13,17 +13,21 @@ export const Profile = () => {
     const [isLoading, setIsLoading] = useState(false)
     const [user, setUser] = useState([])
     const [images, setImages] = useState([])
+    const [collections, setCollections] = useState([])
+    const [tags, setTags] = useState([])
     useProtectedPage()
 
-    useLayoutEffect(() => {
+    useEffect(() => {
         getProfile()
+        getCollections()
+        getTags()
         getImages()
+
     }, [])
 
     const getProfile = async () => {
         setIsLoading(true)
         const id = localStorage.getItem("user")
-        console.log(id)
         try {
             const response = await axios.get(`${baseURL}/user/${id}`, config)
             setUser(response.data)
@@ -33,13 +37,12 @@ export const Profile = () => {
             console.log(error)
         }
     }
+
     const getImages = async () => {
         setIsLoading(true)
         const id = localStorage.getItem("user")
-        console.log(id)
         try {
             const response = await axios.get(`${baseURL}/image/author/${id}`, config)
-            console.log("images", response.data)
             setImages(response.data)
             setIsLoading(false)
         } catch (error) {
@@ -47,20 +50,40 @@ export const Profile = () => {
         }
     }
 
+    const getCollections = async () => {
+        try {
+            const response = await axios.get(`${baseURL}/collection/all`, config)
+            setCollections(response.data.collections)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    const getTags = async () => {
+        try {
+            const id = localStorage.getItem("user")
+            const response = await axios.get(`${baseURL}/image/tag/user/${id}`, config)
+            setTags(response.data)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+
     const showImages = () => {
-        
         return (
             images && images.map((image) => {
                 return (
                     <>
-                        <Text fontSize="xl">{image.id}</Text>
                         <Text fontSize="xl">{image.subtitle}</Text>
-                        <Text fontSize="xl">{image.collection}</Text>
                         <Image src={image.file} />
+                        {collections.map((c) => {
+                            if (c.id === image.collection)
+                                return <p>{c.name}</p>
+                        })}
+                        <TagImage id={image.id}  tags={tags}/>
 
-                        <TagImage id={image.id} key="md"/>
 
-                        
                     </>
                 )
             })
@@ -84,6 +107,7 @@ export const Profile = () => {
                     <Text fontSize="xl">{user.name}</Text>
                     <Text fontSize="xl">{user.nickname}</Text>
                     {showImages()}
+
 
                 </Flex>
                 <Flex bg="#82E6B2" w="25%"></Flex>
