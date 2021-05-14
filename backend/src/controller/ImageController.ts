@@ -15,6 +15,7 @@ const imageBusiness = new ImageBusiness(
 export class ImageController {
     async registerImage(req: Request, res: Response) {
         try {
+            console.log(req.body)
             const input: ImageInputDTO = {
                 subtitle: req.body.subtitle,
                 file: req.body.file,

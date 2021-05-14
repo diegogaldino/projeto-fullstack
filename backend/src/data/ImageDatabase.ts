@@ -90,7 +90,7 @@ export class ImageDatabase extends BaseDatabase {
         if (!image[0]) {
             throw new NotFoundError(`Unable to found image with tag input: ${id}`)
         }
-        console.log("dsfs",image[0])
+        
         return image[0]
     }
     public async getTagsByUserId(id: string): Promise<Image[]> {
@@ -104,7 +104,7 @@ export class ImageDatabase extends BaseDatabase {
         if (!image[0]) {
             throw new NotFoundError(`Unable to found image with tag input: ${id}`)
         }
-        console.log("dsfs",image[0])
+        
         return image[0]
     }
 }
