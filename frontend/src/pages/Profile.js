@@ -31,7 +31,6 @@ export const Profile = () => {
         try {
             const response = await axios.get(`${baseURL}/user/${id}`, config)
             setUser(response.data)
-
             setIsLoading(false)
         } catch (error) {
             console.log(error)

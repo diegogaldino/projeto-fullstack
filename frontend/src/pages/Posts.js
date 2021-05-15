@@ -49,7 +49,6 @@ export const Posts = () => {
         setIsLoading(true)
         try {
             const response = await axios.get(`${baseURL}/image/all`, config)
-            console.log(response.data)
             setPosts(response.data)
             // showPosts()
             setIsLoading(false)
@@ -58,14 +57,20 @@ export const Posts = () => {
         }
     }
 
-    const postPost = async (event, form, clear) => {
-
-        // console.log("form", form)
-        // console.log("clear", clear)
+    const postPost = async (event, form, clear,collection,tags) => {
+        const post={
+            subtitle:form.subtitle,
+            file:form.file,
+            tagsIds:tags,
+            collectionId:collection
+        }
+        console.log("form", form)
+        console.log("collection", collection)
+        console.log("post", post)
         event.preventDefault()
         setIsLoadingPublish(true)
         try {
-            await axios.post(`${baseURL}/posts`, form, config)
+            await axios.post(`${baseURL}/image/register`, post, config)
             toast({
                 title: "Post published.",
                 description: "Your post was published",

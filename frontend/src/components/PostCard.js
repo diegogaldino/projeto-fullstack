@@ -1,4 +1,4 @@
-import { Box, Flex, Heading, Text } from "@chakra-ui/react"
+import { Box, Flex, Heading, Image, Text } from "@chakra-ui/react"
 import { AiOutlineComment, AiOutlineDislike, AiOutlineLike } from "react-icons/ai"
 
 export const PostCard = (props) => {
@@ -21,6 +21,7 @@ export const PostCard = (props) => {
             </Flex>
             <Heading onClick={() => { return props.clickDetail ? false : props.goToDetailPost(props.post.id) }} mb={4} cursor="pointer">{props.post.title}</Heading>
             <Text >{props.post.subtitle}</Text>
+            <Image src={props.post.file} />
             <Text onClick={() => { return props.clickDetail ? false : props.goToDetailPost(props.post.id) }} fontSize="xl" cursor="pointer">{props.post.text}</Text>
             {/* <Flex mt={3} justify="space-between">
                 <Flex alignItems="center">
