@@ -1,14 +1,15 @@
-import dotenv from "dotenv";
 import express from "express";
+import dotenv from "dotenv";
 import cors from 'cors'
 
-dotenv.config()
 const app = express()
+dotenv.config()
 
+app.use(cors({ origin: '*' }))
 app.use(express.json())
-app.use(cors())
 
-app.listen(3003, ()=>{
-    console.log('Servidor rodando na porta 3003')
+const { PORT = 3003 } = process.env
+app.listen(PORT, () => {
+  console.log(`Servidor rodando na porta ${PORT}`)
 })
-  export default app
+export default app
